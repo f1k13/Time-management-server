@@ -15,4 +15,24 @@ export class CalendarService {
     user.update({ tasks: [...user.tasks, tasks] });
     return tasks;
   }
+  async getTasks (userId: number, date: string) {
+    const user = await User.findOne({ where: { id: userId } });
+    const tasks = await this.calendarRepository.findAll({
+      where: {
+        userId: user.id,
+        calendarDate: date
+      }
+    })
+    return tasks
+  }
+  async getTasksCells (userId: number) {
+    const tasks = await this.calendarRepository.findAll({where: {userId: userId}});
+    return tasks
+  }
+  async deleteTasks(id: number, userId: number) {
+    const tasks = await this.calendarRepository.destroy({ where: { id } });
+    const user = await User.findOne({where: {id: userId}});
+    await user.update({tasks: user.tasks.filter((task) => task.id !== id)})
+    return tasks;
+  }
 }
