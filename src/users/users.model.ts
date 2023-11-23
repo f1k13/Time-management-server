@@ -34,6 +34,6 @@ export class User extends Model<User, UserCreationAttributes> {
     description: string;
     type: string;
     userId: number;
-    calendarDate: number;
+    calendarDate: string;
   }>;
 }

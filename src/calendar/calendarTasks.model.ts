@@ -34,6 +34,6 @@ export class CalendarTasks extends Model<
   type: string;
   @Column({ type: DataTypes.INTEGER })
   userId: number;
-  @Column({ type: DataTypes.INTEGER })
-  calendarDate: number;
+  @Column({ type: DataTypes.STRING })
+  calendarDate: string;
 }
