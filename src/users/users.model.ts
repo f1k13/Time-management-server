@@ -36,4 +36,16 @@ export class User extends Model<User, UserCreationAttributes> {
     userId: number;
     calendarDate: string;
   }>;
+  @Column({
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
+    allowNull: true,
+    defaultValue: [],
+  })
+  unacceptedRequests: Array<number>;
+  @Column({
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
+    allowNull: true,
+    defaultValue: [],
+  })
+  friends: Array<number>;
 }

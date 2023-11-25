@@ -3,6 +3,7 @@ import { InjectModel } from "@nestjs/sequelize";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { User } from "./users.model";
 import { CalendarTasks } from "src/calendar/calendarTasks.model";
+import { Op, where } from "sequelize";
 
 @Injectable()
 export class UsersService {
@@ -38,5 +39,28 @@ export class UsersService {
       throw new HttpException("User not found", HttpStatus.NOT_FOUND);
     }
     return user;
+  }
+  async searchUsers(username: string) {
+    const users = await this.userRepository.findAll({
+      where: {
+        username: {
+          [Op.like]: `%${username}%`,
+        },
+      },
+    })
+
+    return users
+  }
+  async sendRequestToFriend(userId: number, friendId: number) {
+    const friend = await this.userRepository.findOne({ where: { id: friendId } });
+    await friend.update({unacceptedRequests: [userId]});
+    return friend
+  }
+  async acceptRequestFriends(userId, friendId) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const friend = await this.userRepository.findOne({ where: { id: friendId } });
+    await friend.update({friends: [userId], unacceptedRequests: friend.unacceptedRequests.filter((id) => id !== userId)});
+    await user.update({friends: [friendId]});
+    return friend
   }
 }
