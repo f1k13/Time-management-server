@@ -41,11 +41,11 @@ export class User extends Model<User, UserCreationAttributes> {
     allowNull: true,
     defaultValue: [],
   })
-  unacceptedRequests: Array<number>;
+  unacceptedRequests: Array<Number>;
   @Column({
     type: DataTypes.ARRAY(DataTypes.INTEGER),
     allowNull: true,
     defaultValue: [],
   })
-  friends: Array<number>;
+  friends: Array<Number>;
 }

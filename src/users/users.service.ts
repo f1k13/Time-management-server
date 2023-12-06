@@ -52,15 +52,31 @@ export class UsersService {
     return users
   }
   async sendRequestToFriend(userId: number, friendId: number) {
-    const friend = await this.userRepository.findOne({ where: { id: friendId } });
-    await friend.update({unacceptedRequests: [userId]});
+    const friend = await this.userRepository.findOne({where: {
+      id: friendId
+    }});
+    const user = await this.userRepository.findOne({where: {
+      id: userId
+    }});
+    const find = await friend.unacceptedRequests.find((item) => item === userId);
+    if(find) {
+      throw new Error ("Friend request already sent");
+    } else {
+      await friend.update({unacceptedRequests: [...friend.unacceptedRequests, userId]});
+    }
     return friend
   }
-  async acceptRequestFriends(userId, friendId) {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
-    const friend = await this.userRepository.findOne({ where: { id: friendId } });
-    await friend.update({friends: [userId], unacceptedRequests: friend.unacceptedRequests.filter((id) => id !== userId)});
-    await user.update({friends: [friendId]});
-    return friend
+  async acceptRequestFriends(userId: number, friendId: number) {
+    const user = await this.userRepository.findOne({where: {id: userId}});
+    const friend = await this.userRepository.findOne({where: {id: friendId}});
+    const find = await user.friends.find((item) => item === friendId);
+    if(find) {
+      throw new Error ("Friend already added");
+    } else {
+      await user.update({friends: [...user.friends, friendId]});
+      await friend.update({friends: [...friend.friends, userId], unacceptedRequests: friend.unacceptedRequests.filter((item) => item !== userId)});
+      return friend
+    }
+    
   }
 }
