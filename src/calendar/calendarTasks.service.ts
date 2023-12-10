@@ -31,8 +31,12 @@ export class CalendarService {
   }
   async deleteTasks(id: number, userId: number) {
     const tasks = await this.calendarRepository.destroy({ where: { id } });
-    const user = await User.findOne({where: {id: userId}});
-    await user.update({tasks: user.tasks.filter((task) => task.id !== id)})
-    return tasks;
+  
+    const user = await User.findByPk(userId);
+    const updatedTasks = user.tasks.filter((item) => item.id !== id);
+    await user.update({ tasks: updatedTasks });
+    console.log(user)
+    return tasks; 
   }
 }
+

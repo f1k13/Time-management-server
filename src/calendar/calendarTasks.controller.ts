@@ -20,7 +20,7 @@ export class CalendarController {
   }
   @Delete('/deleteTask') 
   deleteTasks(@Query() query: {userId: number, id:number}) {
-    return this.calendarService.deleteTasks(query.id, query.userId)
+    return this.calendarService.deleteTasks(query.id, query.userId); 
   }
 
 }

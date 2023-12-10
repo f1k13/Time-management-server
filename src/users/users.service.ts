@@ -73,10 +73,9 @@ export class UsersService {
     if(find) {
       throw new Error ("Friend already added");
     } else {
-      await user.update({friends: [...user.friends, friendId]});
+      await user.update({friends: [...user.friends, friendId], unacceptedRequests: user.unacceptedRequests.filter((item) => item !== friendId)});
       await friend.update({friends: [...friend.friends, userId], unacceptedRequests: friend.unacceptedRequests.filter((item) => item !== userId)});
       return friend
     }
-    
   }
 }
