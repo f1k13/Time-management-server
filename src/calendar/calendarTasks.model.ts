@@ -1,10 +1,11 @@
 import { DataTypes } from "sequelize";
 import {
   Column,
-  ForeignKey,
-  BelongsTo,
   Model,
   Table,
+  HasOne,
+  ForeignKey,
+  BelongsTo,
 } from "sequelize-typescript";
 import { User } from "src/users/users.model";
 
@@ -32,6 +33,7 @@ export class CalendarTasks extends Model<
   description: string;
   @Column({ type: DataTypes.STRING, allowNull: true })
   type: string;
+  @ForeignKey(() => User)
   @Column({ type: DataTypes.INTEGER })
   userId: number;
   @Column({ type: DataTypes.STRING })

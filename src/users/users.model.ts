@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
-import { Column, Model, Table, HasMany, HasOne } from "sequelize-typescript";
+import { Column, Model, HasMany, Table } from "sequelize-typescript";
 import { CalendarTasks } from "src/calendar/calendarTasks.model";
+import { Notes } from "src/notes/notes.model";
 
 interface UserCreationAttributes {
   email: string;
@@ -23,19 +24,7 @@ export class User extends Model<User, UserCreationAttributes> {
   username: string;
   @Column({ type: DataTypes.STRING })
   password: string;
-  @Column({
-    type: DataTypes.ARRAY(DataTypes.JSON),
-    allowNull: true,
-    defaultValue: [],
-  })
-  tasks: Array<{
-    id: number;
-    title: string;
-    description: string;
-    type: string;
-    userId: number;
-    calendarDate: string;
-  }>;
+
   @Column({
     type: DataTypes.ARRAY(DataTypes.INTEGER),
     allowNull: true,
@@ -48,4 +37,13 @@ export class User extends Model<User, UserCreationAttributes> {
     defaultValue: [],
   })
   friends: Array<Number>;
+  @Column({
+    type: DataTypes.ARRAY(DataTypes.JSON),
+    allowNull: true,
+    defaultValue: [],
+  })
+  notes: Array<{ id: number; title: string; date: string; userId: number }>;
+
+  @HasMany(() => CalendarTasks)
+  calendarTasks: CalendarTasks[];
 }

@@ -6,6 +6,9 @@ import { User } from "./users/users.model";
 import { AuthModule } from "./auth/auth.module";
 import { CalendarModule } from "./calendar/calendarTasks.module";
 import { CalendarTasks } from "./calendar/calendarTasks.model";
+import { NotesController } from "./notes/notes.controller";
+import { NotesService } from "./notes/notes.service";
+import { NotesModule } from "./notes/notes.module";
 
 @Module({
   imports: [
@@ -25,8 +28,7 @@ import { CalendarTasks } from "./calendar/calendarTasks.model";
     UsersModule,
     AuthModule,
     CalendarModule,
+    NotesModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
