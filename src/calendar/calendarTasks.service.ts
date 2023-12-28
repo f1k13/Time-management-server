@@ -13,7 +13,6 @@ export class CalendarService {
     const tasks = await this.calendarRepository.create(dto);
     const user = await User.findByPk(dto.userId);
 
-    // Проверка, что user.calendarTasks является массивом
     if (!Array.isArray(user.calendarTasks)) {
       user.calendarTasks = [];
     }
@@ -38,11 +37,8 @@ export class CalendarService {
     });
     return tasks;
   }
-  async deleteTasks(id: number, userId: number) {
-    const user = await User.findByPk(userId);
-
+  async deleteTasks(id: number) {
     const tasks = await this.calendarRepository.destroy({ where: { id } });
-    await user.save();
     return tasks;
   }
 }

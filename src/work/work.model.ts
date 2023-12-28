@@ -2,31 +2,37 @@ import { DataTypes } from "sequelize";
 import { Column, Table, Model, ForeignKey } from "sequelize-typescript";
 import { User } from "src/users/users.model";
 
-interface NotesCreateAttrs {
-  id: number;
-  title: string;
-  date: string;
+interface WorkCreationAttributes {
+  startTime: number;
+  endTime: number;
   userId: number;
+  date: string;
 }
-
-@Table({ tableName: "notes" })
-export class Notes extends Model<Notes, NotesCreateAttrs> {
+@Table({ tableName: "work" })
+export class Work extends Model<Work, WorkCreationAttributes> {
   @Column({
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true,
     unique: true,
+    autoIncrement: true,
   })
   id: number;
   @Column({
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
   })
-  title: string;
+  startTime: number;
+  @Column({
+    type: DataTypes.INTEGER,
+  })
+  endTime: number;
   @Column({
     type: DataTypes.STRING,
   })
   date: string;
   @ForeignKey(() => User)
-  @Column({ type: DataTypes.INTEGER })
+  @Column({
+    type: DataTypes.INTEGER,
+  })
   userId: number;
+  
 }

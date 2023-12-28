@@ -18,7 +18,7 @@ export class CalendarController {
     return this.calendarService.getTasksCells(query.userId);
   }
   @Delete("/deleteTask")
-  deleteTasks(@Query() query: { userId: number; id: number }) {
-    return this.calendarService.deleteTasks(query.id, query.userId);
+  deleteTasks(@Query() query: { id: number }) {
+    return this.calendarService.deleteTasks(query.id);
   }
 }

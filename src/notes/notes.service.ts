@@ -9,8 +9,14 @@ export class NotesService {
   constructor(@InjectModel(Notes) private NotesRepository: typeof Notes) {}
   async createNotes(dto: CreateNotesDto) {
     const note = await this.NotesRepository.create(dto);
-    const user = await User.findOne({ where: { id: dto.userId } });
-    await user.update({ notes: [...user.notes, note] });
+    const user = await User.findByPk(dto.userId);
+
+    if (!Array.isArray(user.notes)) {
+      user.notes = [];
+    }
+
+    user.notes.push(note);
+    await user.save();
     return note;
   }
   async getAllNotes() {
@@ -23,11 +29,8 @@ export class NotesService {
     });
     return notes;
   }
-  async deleteNotes(id: number, userId: number) {
-    const note = await this.NotesRepository.destroy({ where: { id } });
-    const user = await User.findOne({ where: { id: userId } });
-    const updatedNotes = user.notes.filter((item) => item.id !== id);
-    await user.update({ notes: updatedNotes });
-    return note;
+  async deleteNotes(id: number) {
+    const notes = await this.NotesRepository.destroy({ where: { id } });
+    return notes;
   }
 }

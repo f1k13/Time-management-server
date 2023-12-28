@@ -6,9 +6,10 @@ import { User } from "./users/users.model";
 import { AuthModule } from "./auth/auth.module";
 import { CalendarModule } from "./calendar/calendarTasks.module";
 import { CalendarTasks } from "./calendar/calendarTasks.model";
-import { NotesController } from "./notes/notes.controller";
-import { NotesService } from "./notes/notes.service";
 import { NotesModule } from "./notes/notes.module";
+import { Notes } from "./notes/notes.model";
+import { WorkModule } from "./work/work.module";
+import { Work } from "./work/work.model";
 
 @Module({
   imports: [
@@ -22,13 +23,16 @@ import { NotesModule } from "./notes/notes.module";
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, CalendarTasks],
+      models: [User, CalendarTasks, Notes, Work],
       autoLoadModels: true,
     }),
     UsersModule,
     AuthModule,
     CalendarModule,
     NotesModule,
+    WorkModule,
   ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

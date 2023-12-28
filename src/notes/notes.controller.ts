@@ -1,6 +1,6 @@
 import { CreateNotesDto } from "./dto/create-notes.dto";
 import { NotesService } from "./notes.service";
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, Delete } from "@nestjs/common";
 
 @Controller("notes")
 export class NotesController {
@@ -16,5 +16,9 @@ export class NotesController {
   @Get("/getNotes")
   getNotesForUserIdDate(@Query() query: { userId: number }) {
     return this.notesService.getNotesForUserIdDate(query.userId);
+  }
+  @Delete("/delete")
+  deleteNotes(@Query() query: { id: number }) {
+    return this.notesService.deleteNotes(query.id);
   }
 }
