@@ -32,7 +32,7 @@ export class Work extends Model<Work, WorkCreationAttributes> {
   @ForeignKey(() => User)
   @Column({
     type: DataTypes.INTEGER,
+    unique: true,
   })
   userId: number;
-  
 }

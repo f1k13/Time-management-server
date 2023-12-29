@@ -47,35 +47,51 @@ export class UsersService {
           [Op.like]: `%${username}%`,
         },
       },
-    })
+    });
 
-    return users
+    return users;
   }
   async sendRequestToFriend(userId: number, friendId: number) {
-    const friend = await this.userRepository.findOne({where: {
-      id: friendId
-    }});
-    const user = await this.userRepository.findOne({where: {
-      id: userId
-    }});
-    const find = await friend.unacceptedRequests.find((item) => item === userId);
-    if(find) {
-      throw new Error ("Friend request already sent");
+    const friend = await this.userRepository.findOne({
+      where: {
+        id: friendId,
+      },
+    });
+    
+    const find = await friend.unacceptedRequests.find(
+      (item) => item === userId
+    );
+    if (find) {
+      throw new Error("Friend request already sent");
     } else {
-      await friend.update({unacceptedRequests: [...friend.unacceptedRequests, userId]});
+      await friend.update({
+        unacceptedRequests: [...friend.unacceptedRequests, userId],
+      });
     }
-    return friend
+    return friend;
   }
   async acceptRequestFriends(userId: number, friendId: number) {
-    const user = await this.userRepository.findOne({where: {id: userId}});
-    const friend = await this.userRepository.findOne({where: {id: friendId}});
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const friend = await this.userRepository.findOne({
+      where: { id: friendId },
+    });
     const find = await user.friends.find((item) => item === friendId);
-    if(find) {
-      throw new Error ("Friend already added");
+    if (find) {
+      throw new Error("Friend already added");
     } else {
-      await user.update({friends: [...user.friends, friendId], unacceptedRequests: user.unacceptedRequests.filter((item) => item !== friendId)});
-      await friend.update({friends: [...friend.friends, userId], unacceptedRequests: friend.unacceptedRequests.filter((item) => item !== userId)});
-      return friend
+      await user.update({
+        friends: [...user.friends, friendId],
+        unacceptedRequests: user.unacceptedRequests.filter(
+          (item) => item !== friendId
+        ),
+      });
+      await friend.update({
+        friends: [...friend.friends, userId],
+        unacceptedRequests: friend.unacceptedRequests.filter(
+          (item) => item !== userId
+        ),
+      });
+      return friend;
     }
   }
 }

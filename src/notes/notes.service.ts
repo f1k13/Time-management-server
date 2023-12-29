@@ -30,7 +30,7 @@ export class NotesService {
     return notes;
   }
   async deleteNotes(id: number) {
-    const notes = await this.NotesRepository.destroy({ where: { id } });
-    return notes;
+    await this.NotesRepository.destroy({ where: { id } });
+    return this.NotesRepository;
   }
 }
